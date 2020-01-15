@@ -1,20 +1,12 @@
 var http = require('http');
-var fs = require('fs');
 var url = require('url');
+var querystring = require('querystring');
  
-http.createServer( function (request, response) {
-    var pathName = url.parse(request.url).pathname;
-    if (pathName == '/') {
-        fs.readFile('./html/index.html', function(error, data) {
-            response.writeHead(200, {'Content-Type': 'text/html'});
-            response.end(data);
-        });
-    } else if (pathName == '/second') {
-        fs.readFile('./html/second_page.html', function(error, data) {
-            response.writeHead(200, {'Content-Type': 'text/html'});
-            response.end(data);
-        });
-    }
+http.createServer(function (request, response) {
+    var query = url.parse(request.url, true).query;
+    response.writeHead(200, {'Content-Type': 'text/html'});
+    response.end('<h1>' + JSON.stringify(query) + '</h1>');
 }).listen(1234, function() {
     console.log('Server running at http://127.0.0.1:1234');
 });
+
