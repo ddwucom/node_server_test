@@ -1,5 +1,6 @@
 var http = require('http');
 var fs = require('fs');
+var querystring = require('querystring');
  
 http.createServer(function (request, response) {
     if (request.method == 'GET') {
@@ -9,8 +10,21 @@ http.createServer(function (request, response) {
         });
     } else if (request.method == 'POST') {
         request.on('data', function(data) {
-            response.writeHead(200, {'Content-Type': 'text/html'});
-            response.end('<h1>' + data + '</h1>');
+            var text = "";
+            text += data;
+            var parsedStr = querystring.parse(text, '&', '=');
+            // console.log(parsedStr.id);
+            // console.log(parsedStr.pwd);
+
+            if (parsedStr.id == parsedStr.pwd) {
+                response.writeHead(302, { 'Location': 'https://cs.dongduk.ac.kr'});
+                response.end();
+            } else {
+                fs.readFile('./html/login_failed.html', function (error, file_data) {
+                    response.writeHead(200, {'Content-Type': 'text/html'});
+                    response.end(file_data);
+                });
+            }
         });
     }
 }).listen(1234, function() {
