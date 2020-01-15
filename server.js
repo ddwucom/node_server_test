@@ -1,16 +1,8 @@
 var http = require('http');
-var fs = require('fs');
- 
-http.createServer(function (request, response) {
-    // Image File Read
-    fs.readFile('./img/diet.jpg', function(error, data) {
-        if (error) {
-            console.log(error.message);
-        } else {
-            response.writeHead(200, {'Content-Type': 'image/jpeg'});
-            response.end(data);
-        }
-    });
-}).listen(1234, '127.0.0.1');
 
-console.log('Server running at http://127.0.0.1:1234');
+http.createServer(function (request, response) {
+    response.writeHead(302, { 'Location': 'https://cs.dongduk.ac.kr'});
+    response.end();
+}).listen(1234, function() {
+    console.log('Server running at http://127.0.0.1:1234');
+});
